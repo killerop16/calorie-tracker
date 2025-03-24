@@ -1,0 +1,20 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/calorie_tracker
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=iamroot
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: iamroot
+      POSTGRES_DB: calorie_tracker
+    ports:
+      - "5432:5432"

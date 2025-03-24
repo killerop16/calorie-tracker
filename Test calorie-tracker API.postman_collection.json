@@ -1,0 +1,1498 @@
+{
+	"info": {
+		"_postman_id": "824252fb-6321-48ee-8ff1-1b50bb923138",
+		"name": "Test calorie-tracker API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33508451"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Регистрация пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.id).to.exist;\r",
+									"    pm.expect(responseData.name).to.exist;\r",
+									"    pm.expect(responseData.email).to.exist;\r",
+									"    pm.expect(responseData.age).to.exist;\r",
+									"    pm.expect(responseData.weight).to.exist;\r",
+									"    pm.expect(responseData.height).to.exist;\r",
+									"    pm.expect(responseData.goal).to.exist;\r",
+									"    pm.expect(responseData.dailyCalorieLimit).to.exist;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Email is in a valid format\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.email).to.be.a('string');\r",
+									"    pm.expect(responseData.email).to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email should be in a valid format\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"John Doe\",\r\n  \"email\": \"john.doe@example.com\",\r\n  \"age\": 30,\r\n  \"weight\": 70,\r\n  \"height\": 175,\r\n  \"goal\": \"LOSS\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получение пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.id).to.exist;\r",
+									"    pm.expect(responseData.name).to.exist;\r",
+									"    pm.expect(responseData.email).to.exist;\r",
+									"    pm.expect(responseData.age).to.exist;\r",
+									"    pm.expect(responseData.weight).to.exist;\r",
+									"    pm.expect(responseData.height).to.exist;\r",
+									"    pm.expect(responseData.goal).to.exist;\r",
+									"    pm.expect(responseData.dailyCalorieLimit).to.exist;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Email is in a valid format\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.email).to.be.a('string').and.to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email is not in a valid format\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Age, weight, height, and dailyCalorieLimit are non-negative integers\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    \r",
+									"    const propertiesToCheck = ['age', 'weight', 'height', 'dailyCalorieLimit'];\r",
+									"    propertiesToCheck.forEach(property => {\r",
+									"        pm.expect(responseData[property]).to.exist.and.to.be.a('number').and.to.be.at.least(0);\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "обновление пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate the response schema for required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.id).to.exist.and.to.be.a('number');\r",
+									"    pm.expect(responseData.name).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.email).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.age).to.exist.and.to.be.a('number');\r",
+									"    pm.expect(responseData.weight).to.exist.and.to.be.a('number');\r",
+									"    pm.expect(responseData.height).to.exist.and.to.be.a('number');\r",
+									"    pm.expect(responseData.goal).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.dailyCalorieLimit).to.exist.and.to.be.a('number');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"john.doe@example.com\",\r\n    \"age\": 31,\r\n    \"weight\": 65.0,\r\n    \"height\": 180.0,\r\n    \"goal\": \"GAIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "удаление пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 204\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body is null\", function () {\r",
+									"    const responseData = xml2Json(pm.response.text());\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.null;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Verify response body schema for DELETE request\", function () {\r",
+									"    const responseData = xml2Json(pm.response.text());\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.null;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Food",
+			"item": [
+				{
+					"name": "Добавление продукта",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has the required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.name).to.exist;\r",
+									"    pm.expect(responseData.calories).to.exist;\r",
+									"    pm.expect(responseData.proteins).to.exist;\r",
+									"    pm.expect(responseData.fats).to.exist;\r",
+									"    pm.expect(responseData.carbs).to.exist;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Пельмени\",\r\n    \"calories\": 400,\r\n    \"proteins\": 33,\r\n    \"fats\": 150,\r\n    \"carbs\": 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/foods",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"foods"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение по Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData).to.have.property('name');\r",
+									"    pm.expect(responseData).to.have.property('calories');\r",
+									"    pm.expect(responseData).to.have.property('proteins');\r",
+									"    pm.expect(responseData).to.have.property('fats');\r",
+									"    pm.expect(responseData).to.have.property('carbs');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Name should be a non-empty string\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Calories, proteins, fats, and carbs are non-negative integers\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    \r",
+									"    ['calories', 'proteins', 'fats', 'carbs'].forEach(function(key) {\r",
+									"        pm.expect(responseData[key]).to.exist.and.to.be.a('number').and.to.satisfy(val => val >= 0, `${key} should be a non-negative integer`);\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/foods/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"foods",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение всех продуктов",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 300ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(300);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields - name, calories, proteins, fats, and carbs\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('array');\r",
+									"    \r",
+									"    responseData.forEach(function(food) {\r",
+									"        pm.expect(food).to.be.an('object');\r",
+									"        pm.expect(food.name).to.exist;\r",
+									"        pm.expect(food.calories).to.exist;\r",
+									"        pm.expect(food.proteins).to.exist;\r",
+									"        pm.expect(food.fats).to.exist;\r",
+									"        pm.expect(food.carbs).to.exist;\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Name is a non-empty string\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  responseData.forEach(function(item) {\r",
+									"    pm.expect(item.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");\r",
+									"  });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Calories, proteins, fats, and carbs are non-negative integers\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('array');\r",
+									"    responseData.forEach(function(food) {\r",
+									"        pm.expect(food.calories).to.be.a('number').and.to.be.at.least(0);\r",
+									"        pm.expect(food.proteins).to.be.a('number').and.to.be.at.least(0);\r",
+									"        pm.expect(food.fats).to.be.a('number').and.to.be.at.least(0);\r",
+									"        pm.expect(food.carbs).to.be.a('number').and.to.be.at.least(0);\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/foods",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"foods"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Обновление продукта",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields - name, calories, proteins, fats, and carbs\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.name).to.exist;\r",
+									"    pm.expect(responseData.calories).to.exist;\r",
+									"    pm.expect(responseData.proteins).to.exist;\r",
+									"    pm.expect(responseData.fats).to.exist;\r",
+									"    pm.expect(responseData.carbs).to.exist;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Calories, proteins, fats, and carbs are non-negative numbers\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.calories).to.be.a('number').and.to.be.at.least(0);\r",
+									"    pm.expect(responseData.proteins).to.be.a('number').and.to.be.at.least(0);\r",
+									"    pm.expect(responseData.fats).to.be.a('number').and.to.be.at.least(0);\r",
+									"    pm.expect(responseData.carbs).to.be.a('number').and.to.be.at.least(0);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Пельмени\",\r\n    \"calories\": 500,\r\n    \"proteins\": 33,\r\n    \"fats\": 150,\r\n    \"carbs\": 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/foods/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"foods",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "удаление продукта",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 204\", function () {\r",
+									"  pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body is null or empty\", function () {\r",
+									"    const responseData = xml2Json(pm.response.text());\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.null;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/foods/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"foods",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Meal",
+			"item": [
+				{
+					"name": "добавление продуктов",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.name).to.exist;\r",
+									"    pm.expect(responseData.calories).to.exist;\r",
+									"    pm.expect(responseData.proteins).to.exist;\r",
+									"    pm.expect(responseData.fats).to.exist;\r",
+									"    pm.expect(responseData.carbs).to.exist;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Calories, proteins, fats, and carbs are non-negative integers\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData.calories).to.be.a('number').and.to.be.at.least(0);\r",
+									"    pm.expect(responseData.proteins).to.be.a('number').and.to.be.at.least(0);\r",
+									"    pm.expect(responseData.fats).to.be.a('number').and.to.be.at.least(0);\r",
+									"    pm.expect(responseData.carbs).to.be.a('number').and.to.be.at.least(0);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Пельмени\",\r\n    \"calories\": 400,\r\n    \"proteins\": 33,\r\n    \"fats\": 150,\r\n    \"carbs\": 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/foods",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"foods"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "добавление продуктов",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.name).to.exist;\r",
+									"    pm.expect(responseData.calories).to.exist;\r",
+									"    pm.expect(responseData.proteins).to.exist;\r",
+									"    pm.expect(responseData.fats).to.exist;\r",
+									"    pm.expect(responseData.carbs).to.exist;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Name is a non-empty string\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Calories, proteins, fats, and carbs are non-negative integers\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.calories).to.be.a('number').and.to.satisfy(val => val >= 0, \"Calories should be a non-negative integer\");\r",
+									"    pm.expect(responseData.proteins).to.be.a('number').and.to.satisfy(val => val >= 0, \"Proteins should be a non-negative integer\");\r",
+									"    pm.expect(responseData.fats).to.be.a('number').and.to.satisfy(val => val >= 0, \"Fats should be a non-negative integer\");\r",
+									"    pm.expect(responseData.carbs).to.be.a('number').and.to.satisfy(val => val >= 0, \"Carbs should be a non-negative integer\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Салат\",\r\n    \"calories\": 250,\r\n    \"proteins\": 23,\r\n    \"fats\": 40,\r\n    \"carbs\": 60\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/foods",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"foods"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Регистрация пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData.id).to.exist;\r",
+									"  pm.expect(responseData.name).to.exist;\r",
+									"  pm.expect(responseData.email).to.exist;\r",
+									"  pm.expect(responseData.age).to.exist;\r",
+									"  pm.expect(responseData.weight).to.exist;\r",
+									"  pm.expect(responseData.height).to.exist;\r",
+									"  pm.expect(responseData.goal).to.exist;\r",
+									"  pm.expect(responseData.dailyCalorieLimit).to.exist;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Email is in a valid format\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.email).to.be.a('string').and.to.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"John Doe\",\r\n  \"email\": \"john.doe@example.com\",\r\n  \"age\": 30,\r\n  \"weight\": 70,\r\n  \"height\": 175,\r\n  \"goal\": \"LOSS\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "добавление приема  пищи",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let now = new Date();\r",
+									"now.setMinutes(now.getMinutes() + 1); // Дата всегда в будущем\r",
+									"\r",
+									"let year = now.getFullYear();\r",
+									"let month = String(now.getMonth() + 1).padStart(2, '0'); // Добавляем 0, если месяц < 10\r",
+									"let day = String(now.getDate()).padStart(2, '0');\r",
+									"let hours = String(now.getHours()).padStart(2, '0');\r",
+									"let minutes = String(now.getMinutes()).padStart(2, '0');\r",
+									"let seconds = String(now.getSeconds()).padStart(2, '0');\r",
+									"\r",
+									"let formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;\r",
+									"\r",
+									"pm.variables.set(\"mealTime\", formattedDate); // Устанавливаем переменную\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate the meal object\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"\r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData.mealId).to.be.a('number');\r",
+									"  pm.expect(responseData.userId).to.be.a('number');\r",
+									"  pm.expect(responseData.mealTime).to.be.a('string');\r",
+									"  pm.expect(responseData.foodItems).to.be.an('array');\r",
+									"  responseData.foodItems.forEach(function(foodItem) {\r",
+									"    pm.expect(foodItem).to.be.an('object');\r",
+									"    pm.expect(foodItem.name).to.be.a('string');\r",
+									"    pm.expect(foodItem.calories).to.be.a('number');\r",
+									"    pm.expect(foodItem.proteins).to.be.a('number');\r",
+									"    pm.expect(foodItem.fats).to.be.a('number');\r",
+									"    pm.expect(foodItem.carbs).to.be.a('number');\r",
+									"  });\r",
+									"  pm.expect(responseData.totalCalories).to.be.a('number');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"FoodItems array and its elements are valid\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.foodItems).to.be.an('array').that.is.not.empty;\r",
+									"\r",
+									"    responseData.foodItems.forEach(function(item) {\r",
+									"        pm.expect(item).to.have.property('name').that.is.a('string');\r",
+									"        pm.expect(item).to.have.property('calories').that.is.a('number');\r",
+									"        pm.expect(item).to.have.property('proteins').that.is.a('number');\r",
+									"        pm.expect(item).to.have.property('fats').that.is.a('number');\r",
+									"        pm.expect(item).to.have.property('carbs').that.is.a('number');\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 2,\r\n    \"mealTime\": \"{{mealTime}}\",\r\n    \"foodItems\": [\r\n    {\r\n      \"foodId\": 2,\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"foodId\": 3,\r\n      \"quantity\": 1\r\n    }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/meals",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"meals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получения приема пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData).to.have.property('mealId');\r",
+									"    pm.expect(responseData).to.have.property('userId');\r",
+									"    pm.expect(responseData).to.have.property('mealTime');\r",
+									"    pm.expect(responseData).to.have.property('foodItems');\r",
+									"    pm.expect(responseData).to.have.property('totalCalories');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Food items contain non-empty name and non-negative values for calories, proteins, fats, and carbs\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.foodItems).to.be.an('array');\r",
+									"    \r",
+									"    responseData.foodItems.forEach(function(foodItem) {\r",
+									"        pm.expect(foodItem.name).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");\r",
+									"        pm.expect(foodItem.calories).to.exist.and.to.be.a('number').and.to.be.at.least(0, \"Calories should be non-negative\");\r",
+									"        pm.expect(foodItem.proteins).to.exist.and.to.be.a('number').and.to.be.at.least(0, \"Proteins should be non-negative\");\r",
+									"        pm.expect(foodItem.fats).to.exist.and.to.be.a('number').and.to.be.at.least(0, \"Fats should be non-negative\");\r",
+									"        pm.expect(foodItem.carbs).to.exist.and.to.be.a('number').and.to.be.at.least(0, \"Carbs should be non-negative\");\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/meals/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"meals",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получения приемов пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate the meal object\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('array');\r",
+									"    responseData.forEach(function(meal) {\r",
+									"        pm.expect(meal).to.have.property('mealId').that.is.a('number');\r",
+									"        pm.expect(meal).to.have.property('userId').that.is.a('number');\r",
+									"        pm.expect(meal).to.have.property('mealTime').that.is.a('string');\r",
+									"        pm.expect(meal).to.have.property('foodItems').that.is.an('array');\r",
+									"        pm.expect(meal).to.have.property('totalCalories').that.is.a('number');\r",
+									"        \r",
+									"        meal.foodItems.forEach(function(foodItem) {\r",
+									"            pm.expect(foodItem).to.have.property('name').that.is.a('string');\r",
+									"            pm.expect(foodItem).to.have.property('calories').that.is.a('number');\r",
+									"            pm.expect(foodItem).to.have.property('proteins').that.is.a('number');\r",
+									"            pm.expect(foodItem).to.have.property('fats').that.is.a('number');\r",
+									"            pm.expect(foodItem).to.have.property('carbs').that.is.a('number');\r",
+									"        });\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate foodItems array and its elements\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('array');\r",
+									"  pm.expect(responseData).to.have.lengthOf.at.least(1, \"Array should not be empty\");\r",
+									"\r",
+									"  responseData.forEach(function(meal) {\r",
+									"    pm.expect(meal.foodItems).to.be.an('array');\r",
+									"    pm.expect(meal.foodItems).to.have.lengthOf.at.least(1, \"Food items array should not be empty\");\r",
+									"\r",
+									"    meal.foodItems.forEach(function(foodItem) {\r",
+									"      pm.expect(foodItem.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");\r",
+									"      pm.expect(foodItem.calories).to.be.a('number').and.to.be.at.least(0, \"Calories should be non-negative\");\r",
+									"      pm.expect(foodItem.proteins).to.be.a('number').and.to.be.at.least(0, \"Proteins should be non-negative\");\r",
+									"      pm.expect(foodItem.fats).to.be.a('number').and.to.be.at.least(0, \"Fats should be non-negative\");\r",
+									"      pm.expect(foodItem.carbs).to.be.a('number').and.to.be.at.least(0, \"Carbs should be non-negative\");\r",
+									"    });\r",
+									"  });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/meals/user/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"meals",
+								"user",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "удаление приема пищи",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response body is null or empty\", function () {\r",
+									"    const responseData = xml2Json(pm.response.text());\r",
+									"    pm.expect(responseData).to.be.null;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response body schema matches the expected schema for a DELETE request\", function () {\r",
+									"    const responseData = xml2Json(pm.response.text());\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.null;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/meals/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"meals",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Report",
+			"item": [
+				{
+					"name": "добавление приема  пищи Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let now = new Date();\r",
+									"now.setMinutes(now.getMinutes() + 1); // Дата всегда в будущем\r",
+									"\r",
+									"let year = now.getFullYear();\r",
+									"let month = String(now.getMonth() + 1).padStart(2, '0'); // Добавляем 0, если месяц < 10\r",
+									"let day = String(now.getDate()).padStart(2, '0');\r",
+									"let hours = String(now.getHours()).padStart(2, '0');\r",
+									"let minutes = String(now.getMinutes()).padStart(2, '0');\r",
+									"let seconds = String(now.getSeconds()).padStart(2, '0');\r",
+									"\r",
+									"let formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;\r",
+									"\r",
+									"pm.variables.set(\"mealTime\", formattedDate); // Устанавливаем переменную\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 2,\r\n    \"mealTime\": \"{{mealTime}}\",\r\n    \"foodItems\": [\r\n    {\r\n      \"foodId\": 3,\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"foodId\": 2,\r\n      \"quantity\": 1\r\n    }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/meals",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"meals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "получения отчета за день",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate userId, date, and totalCalories fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.userId).to.exist.and.to.be.a('number');\r",
+									"    pm.expect(responseData.date).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.totalCalories).to.exist.and.to.be.a('number');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Meals array and its nested fields are valid\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData.meals).to.be.an('array').that.is.not.empty;\r",
+									"\r",
+									"    responseData.meals.forEach(function (meal) {\r",
+									"        pm.expect(meal).to.be.an('object');\r",
+									"        pm.expect(meal.mealId).to.exist.and.to.be.a('number');\r",
+									"        pm.expect(meal.userId).to.exist.and.to.be.a('number');\r",
+									"        pm.expect(meal.mealTime).to.exist.and.to.be.a('string');\r",
+									"        pm.expect(meal.foodItems).to.be.an('array').that.is.not.empty;\r",
+									"\r",
+									"        meal.foodItems.forEach(function (foodItem) {\r",
+									"            pm.expect(foodItem).to.be.an('object');\r",
+									"            pm.expect(foodItem.name).to.exist.and.to.be.a('string');\r",
+									"            pm.expect(foodItem.calories).to.exist.and.to.be.a('number');\r",
+									"            pm.expect(foodItem.proteins).to.exist.and.to.be.a('number');\r",
+									"            pm.expect(foodItem.fats).to.exist.and.to.be.a('number');\r",
+									"            pm.expect(foodItem.carbs).to.exist.and.to.be.a('number');\r",
+									"        });\r",
+									"        pm.expect(meal.totalCalories).to.exist.and.to.be.a('number');\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/reports/daily?userId=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"reports",
+								"daily"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "проверка, уложился ли пользователь в свою дневную норму калорий;",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields - userId and withinCalorieLimit\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.userId).to.exist;\r",
+									"    pm.expect(responseData.withinCalorieLimit).to.exist;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"UserId is a non-negative integer\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.userId).to.be.a('number');\r",
+									"    pm.expect(responseData.userId).to.be.at.least(0);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"WithinCalorieLimit is a boolean value\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.withinCalorieLimit).to.be.a('boolean');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/reports/summary?userId=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"reports",
+								"summary"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получения истории за 7 дней",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.userId).to.exist;\r",
+									"    pm.expect(responseData.history).to.exist.and.to.be.an('array');\r",
+									"\r",
+									"    responseData.history.forEach(function(item) {\r",
+									"        pm.expect(item.userId).to.exist;\r",
+									"        pm.expect(item.date).to.exist;\r",
+									"        pm.expect(item.totalCalories).to.exist;\r",
+									"        pm.expect(item.meals).to.exist.and.to.be.an('array');\r",
+									"        pm.expect(item.withinCalorieLimit).to.exist;\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Date is in a valid date format\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  responseData.history.forEach(function(item) {\r",
+									"    pm.expect(item.date).to.match(/^\\d{4}-\\d{2}-\\d{2}$/);\r",
+									"  });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/reports/history?userId=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"reports",
+								"history"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
